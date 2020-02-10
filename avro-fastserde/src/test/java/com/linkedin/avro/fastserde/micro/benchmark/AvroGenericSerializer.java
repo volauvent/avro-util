@@ -16,13 +16,20 @@ public class AvroGenericSerializer<K> {
     this(new GenericDatumWriter<>(schema));
   }
 
-  protected AvroGenericSerializer(DatumWriter datumWriter) {
+  public AvroGenericSerializer(DatumWriter datumWriter) {
     this.datumWriter = datumWriter;
   }
 
-  public byte[] serialize(K object) throws Exception {
+  public byte[] serialize(K object, boolean useBufferedBinaryEncoder) throws Exception {
     ByteArrayOutputStream output = new ByteArrayOutputStream();
-    Encoder encoder = AvroCompatibilityHelper.newBufferedBinaryEncoder(output);
+    Encoder encoder;
+
+    if (useBufferedBinaryEncoder) {
+      encoder = AvroCompatibilityHelper.newBufferedBinaryEncoder(output);
+    } else {
+      encoder = AvroCompatibilityHelper.newBinaryEncoder(output);
+    }
+
     try {
       datumWriter.write(object, encoder);
       encoder.flush();
@@ -41,11 +48,18 @@ public class AvroGenericSerializer<K> {
   }
 
   public byte[] serializeObjects(Iterable<K> objects) throws Exception {
-    return serializeObjects(objects, new ByteArrayOutputStream());
+    return serializeObjects(objects, new ByteArrayOutputStream(), true);
   }
 
-  private byte[] serializeObjects(Iterable<K> objects, ByteArrayOutputStream output) throws Exception {
-    Encoder encoder = AvroCompatibilityHelper.newBufferedBinaryEncoder(output);
+  private byte[] serializeObjects(Iterable<K> objects, ByteArrayOutputStream output, boolean useBuffer) throws Exception {
+    Encoder encoder;
+
+    if (useBuffer) {
+      encoder = AvroCompatibilityHelper.newBufferedBinaryEncoder(output);
+    } else {
+      encoder = AvroCompatibilityHelper.newBinaryEncoder(output);
+    }
+
     try {
       objects.forEach(object -> {
         try {
