@@ -20,7 +20,7 @@ public class AvroGenericSerializer<K> {
     this.datumWriter = datumWriter;
   }
 
-  public byte[] serialize(K object) throws Exception {
+  public byte[] serialize(K object, boolean useBufferedBinaryEncoder) throws Exception {
     ByteArrayOutputStream output = new ByteArrayOutputStream();
     Encoder encoder = AvroCompatibilityHelper.newBinaryEncoder(output, true, null);
     try {
@@ -41,7 +41,7 @@ public class AvroGenericSerializer<K> {
   }
 
   public byte[] serializeObjects(Iterable<K> objects) throws Exception {
-    return serializeObjects(objects, new ByteArrayOutputStream());
+    return serializeObjects(objects, new ByteArrayOutputStream(), true);
   }
 
   private byte[] serializeObjects(Iterable<K> objects, ByteArrayOutputStream output) throws Exception {

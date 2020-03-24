@@ -44,8 +44,8 @@ import org.openjdk.jmh.annotations.Warmup;
 @Fork(1)
 //@Fork(value = 1, jvmArgsAppend = {"-XX:+PrintGCDetails", "-Xms16g", "-Xmx16g"})
 //@Threads(10)
-@Warmup(iterations = 1)
-@Measurement(iterations = 1)
+@Warmup(iterations = 5)
+@Measurement(iterations = 5)
 public class fastAvroSerdesBenchmark {
   private final Random random = new Random();;
   private final Map<Object, Object> properties = new HashMap<>();
