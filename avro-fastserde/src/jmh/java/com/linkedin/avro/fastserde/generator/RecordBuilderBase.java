@@ -14,7 +14,6 @@ import org.apache.avro.Schema.Field;
 import org.apache.avro.Schema.Type;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.IndexedRecord;
-import com.linkedin.avro.compatibility.AvroCompatibilityHelper;
 
 public abstract class RecordBuilderBase<T extends IndexedRecord> implements RecordBuilder<T> {
   private static final Field[] EMPTY_FIELDS = new Field[0];
@@ -80,7 +79,7 @@ public abstract class RecordBuilderBase<T extends IndexedRecord> implements Reco
   }
 
   protected Object defaultValue(Field field) throws IOException {
-    return AvroCompatibilityHelper.getDefaultValue(field);
+    return null;
   }
 
   public boolean equals(Object obj) {

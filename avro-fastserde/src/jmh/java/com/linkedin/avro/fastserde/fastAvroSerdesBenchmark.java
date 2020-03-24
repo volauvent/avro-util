@@ -44,8 +44,8 @@ import org.openjdk.jmh.annotations.Warmup;
 @Fork(1)
 //@Fork(value = 1, jvmArgsAppend = {"-XX:+PrintGCDetails", "-Xms16g", "-Xmx16g"})
 //@Threads(10)
-@Warmup(iterations = 5)
-@Measurement(iterations = 5)
+@Warmup(iterations = 1)
+@Measurement(iterations = 1)
 public class fastAvroSerdesBenchmark {
   private final Random random = new Random();;
   private final Map<Object, Object> properties = new HashMap<>();
@@ -72,7 +72,7 @@ public class fastAvroSerdesBenchmark {
 
   public byte[] serializeGeneratedRecord(GenericData.Record generatedRecord) throws Exception {
     AvroGenericSerializer serializer = new AvroGenericSerializer(benchmarkSchame);
-    return serializer.serialize(generatedRecord, true);
+    return serializer.serialize(generatedRecord);
   }
 
   @Setup(Level.Trial)
@@ -90,12 +90,12 @@ public class fastAvroSerdesBenchmark {
   @Benchmark
   public void testAvroSerialization() throws Exception {
     // use vanilla avro 1.4 encoder, do not use buffer binary encoder
-    serializer.serialize(generatedRecord, false);
+    serializer.serialize(generatedRecord);
   }
 
   @Benchmark
   public void testFastAvroSerialization() throws Exception {
-    fastSerializer.serialize(generatedRecord, true);
+    fastSerializer.serialize(generatedRecord);
   }
 
   @Benchmark

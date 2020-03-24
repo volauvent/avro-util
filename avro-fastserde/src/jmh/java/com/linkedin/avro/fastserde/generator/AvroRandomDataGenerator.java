@@ -17,7 +17,7 @@
 package com.linkedin.avro.fastserde.generator;
 
 import com.linkedin.avro.fastserde.generator.GenericRecordBuilder;
-import com.linkedin.avro.compatibility.AvroCompatibilityHelper;
+import com.linkedin.avroutil1.compatibility.AvroCompatibilityHelper;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
